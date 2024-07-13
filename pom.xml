@@ -131,6 +131,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>employee_management_system_backend</finalName>
 	</build>
 
 </project>
