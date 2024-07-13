@@ -34,6 +34,14 @@ public class UserServiceImpl implements UserService {
             user.setUsername(userRequestModel.getUsername());
             user.setPassword(userRequestModel.getPassword());
             user.setRole(userRequestModel.getRole());
+            user.setEmailId(userRequestModel.getEmailId());
+            user.setEnable(true);
+            user.setEmployeeAge(userRequestModel.getEmployeeAge());
+            user.setPassword(userRequestModel.getPassword());
+            user.setCompanyName(userRequestModel.getCompanyName());
+            user.setJobTitle(userRequestModel.getJobTitle());
+            user.setMobileNumber(userRequestModel.getMobileNumber());
+            user.setMobileNumber(userRequestModel.getMobileNumber());
             user = userRepo.save(user);
             response.setData(user);
             response.setStatus(HttpStatus.OK.value());

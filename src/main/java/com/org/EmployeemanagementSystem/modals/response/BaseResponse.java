@@ -29,7 +29,7 @@ public class  BaseResponse<T> {
         this();
         this.data = data;
         this.status = HttpStatus.OK.value();
-        this.message = " ";
+        this.message = " success";
     }
     public BaseResponse(T data, Integer status, String message) {
         this(data);

@@ -44,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
          SecurityContextHolder.getContext().setAuthentication(authentication);
 
          var user = userRepo.findByEmailId(singInRequest.getEmailId()).orElseThrow(()->new UsernameNotFoundException("User not found"));
-        var jwt = jwtService.generateToken(  user);
+        var jwt = jwtService.generateToken( user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(),user);
         JWTAuthenticationResponse jwtAuthenticationResponse = new JWTAuthenticationResponse();
         jwtAuthenticationResponse.setToken(jwt);
@@ -55,8 +55,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public JWTAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest){
         String emailId=jwtService.extractUserName(refreshTokenRequest.getToken());
         UserDetails user= userRepo.findByEmailId(emailId).orElseThrow();
-        if(jwtService.isTokenValid(refreshTokenRequest.getToken(),user)){
-            var jwt=jwtService.generateToken(user);
+        if(jwtService.isTokenValid(refreshTokenRequest.getToken(), (User) user)){
+            var jwt=jwtService.generateToken((User) user);
             JWTAuthenticationResponse jwtAuthenticationResponse = new JWTAuthenticationResponse();
             jwtAuthenticationResponse.setToken(jwt);
             jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());

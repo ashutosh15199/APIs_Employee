@@ -17,12 +17,15 @@ import java.util.function.Function;
 
 @Service
 public class JWTServiceImpl implements JWTService {
-    public String generateToken(UserDetails user){
+    public String generateToken(User user){
         if(user==null || user.getUsername()== null || user.isEnabled()==false || user.getUsername().isEmpty()){
             throw new RuntimeException("Invalid credentials");
         }
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        claims.put("userId",user.getEmployeeId());
+        claims.put("role",user.getRole().toString());
         try {
-            return Jwts.builder().setSubject(user.getUsername())
+            return Jwts.builder().setClaims(claims)
                     .setIssuedAt(new Date(System.currentTimeMillis()))
                     .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                     .signWith(getSiginKey(), SignatureAlgorithm.HS256)
@@ -40,7 +43,10 @@ public class JWTServiceImpl implements JWTService {
                 .compact();
     }
     public String extractUserName(String token){
-        return extractClaims(token,Claims::getSubject);
+        return Jwts.parser().setSigningKey(getSiginKey()).parseClaimsJws(token).getBody().getSubject();
+    }
+    public String extractRole(String token) {
+        return Jwts.parser().setSigningKey(getSiginKey()).parseClaimsJws(token).getBody().get("role", String.class);
     }
     private <T>T extractClaims(String token, Function<Claims,T>claimsResolvers){
       final Claims claims = extractAllClaims(token);
@@ -53,7 +59,7 @@ public class JWTServiceImpl implements JWTService {
     private Claims extractAllClaims(String token){
         return Jwts.parserBuilder().setSigningKey(getSiginKey()).build().parseClaimsJws(token).getBody();
     }
-    public boolean isTokenValid(String token,UserDetails user){
+    public boolean isTokenValid(String token,User user){
         final String username= extractUserName(token);
         return (username.equals(user.getUsername()) && !isTokenExpire(token));
     }

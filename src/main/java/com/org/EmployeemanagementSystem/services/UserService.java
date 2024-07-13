@@ -9,5 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService {
     public BaseResponse createUserbyAdmin(UserRequestModel userRequestModel);
     public UserDetailsService userDetailsService();
+
 }
 
