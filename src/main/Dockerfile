@@ -1,4 +1,4 @@
 FROM openjdk:17
 EXPOSE 8080
-ADD target/springboot-maven-deploy.jar springboot-maven-deploy.jar
-ENTRYPOINT ["java", "-war", "springboot-maven-deploy.war"]
+ADD target/employee_management_system_backend.jar employee_management_system_backend.jar
+ENTRYPOINT ["java", "-jar", "employee_management_system_backend"]
